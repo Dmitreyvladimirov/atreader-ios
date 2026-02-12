@@ -2,27 +2,100 @@ import SwiftUI
 
 struct ReaderView: View {
     @StateObject var viewModel: ReaderViewModel
-    let workId: Int
-    let chapterId: Int
+    let work: Work
+    let chapters: [Chapter]
+    let initialChapterId: Int
+
+    @State private var currentChapterId: Int
+    @State private var isTOCPresented = false
+    @Environment(\.dismiss) private var dismiss
+
+    init(viewModel: @autoclosure @escaping () -> ReaderViewModel, work: Work, chapters: [Chapter], initialChapterId: Int) {
+        _viewModel = StateObject(wrappedValue: viewModel())
+        self.work = work
+        self.chapters = chapters
+        self.initialChapterId = initialChapterId
+        _currentChapterId = State(initialValue: initialChapterId)
+    }
 
     var body: some View {
-        Group {
+        ZStack {
+            ATTheme.background.ignoresSafeArea()
+
             if viewModel.isLoading {
                 ProgressView("Loading chapter")
             } else if let errorMessage = viewModel.errorMessage {
                 ContentUnavailableView("Error", systemImage: "exclamationmark.triangle", description: Text(errorMessage))
             } else {
                 ScrollView {
-                    Text(viewModel.text)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding()
+                    VStack(alignment: .center, spacing: 24) {
+                        Text(work.title)
+                            .font(.system(size: 28, weight: .regular, design: .rounded))
+                            .multilineTextAlignment(.center)
+                            .foregroundStyle(ATTheme.textPrimary)
+
+                        Text(currentChapterTitle)
+                            .font(ATTheme.titleFont(64))
+                            .foregroundStyle(ATTheme.textPrimary)
+
+                        Text(viewModel.text)
+                            .font(.system(size: 21, weight: .regular, design: .rounded))
+                            .lineSpacing(8)
+                            .foregroundStyle(ATTheme.textPrimary)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                    .padding(.horizontal, 22)
+                    .padding(.top, 18)
+                    .padding(.bottom, 60)
                 }
             }
         }
-        .navigationTitle("Reader")
-        .task {
-            await viewModel.load(workId: workId, chapterId: chapterId)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button {
+                    dismiss()
+                } label: {
+                    Image(systemName: "chevron.left")
+                        .foregroundStyle(.white)
+                }
+            }
+
+            ToolbarItemGroup(placement: .topBarTrailing) {
+                Image(systemName: "gearshape")
+                    .foregroundStyle(.white)
+
+                Button {
+                    isTOCPresented = true
+                } label: {
+                    Image(systemName: "list.bullet")
+                        .foregroundStyle(.white)
+                }
+
+                Image(systemName: "ellipsis.vertical")
+                    .foregroundStyle(.white)
+            }
         }
+        .toolbarBackground(ATTheme.brandBlue, for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
+        .sheet(isPresented: $isTOCPresented) {
+            NavigationStack {
+                TableOfContentsView(chapters: chapters, selectedChapterId: currentChapterId) { chapter in
+                    currentChapterId = chapter.id
+                }
+            }
+        }
+        .task {
+            await viewModel.load(workId: work.id, chapterId: currentChapterId)
+        }
+        .onChange(of: currentChapterId) { _, newValue in
+            Task { await viewModel.load(workId: work.id, chapterId: newValue) }
+        }
+    }
+
+    private var currentChapterTitle: String {
+        let chapter = chapters.first(where: { $0.id == currentChapterId })
+        return chapter?.title ?? "Chapter"
     }
 }
 
@@ -30,23 +103,27 @@ struct ReaderView: View {
     NavigationStack {
         ReaderView(
             viewModel: ReaderViewModel(readerRepository: ReaderPreviewRepository()),
-            workId: 1,
-            chapterId: 1
+            work: Work(id: 1001, title: "Merciless Healer. Vol. 3", authorName: "Konstantin Zaitsev", coverURL: nil),
+            chapters: [
+                Chapter(id: 7, workId: 1001, title: "Chapter 7", order: 7),
+                Chapter(id: 8, workId: 1001, title: "Chapter 8", order: 8),
+                Chapter(id: 9, workId: 1001, title: "Chapter 9", order: 9)
+            ],
+            initialChapterId: 9
         )
     }
 }
 
 private struct ReaderPreviewRepository: ReaderRepository {
     func fetchWorkContent(workId: Int) async throws -> [Chapter] {
-        [Chapter(id: 1, workId: workId, title: "Chapter 1", order: 1)]
+        [Chapter(id: 9, workId: workId, title: "Chapter 9", order: 9)]
     }
 
     func fetchChapterText(workId: Int, chapterId: Int) async throws -> String {
         """
-        A thin line of light crossed the room.
+        The way back was remembered in fragments, as if I had taken too much cheap wine.
 
-        He reached for the terminal, reading the message one more time.
-        Nothing had changed, except the hour and his confidence.
+        I remembered hands on my face, a tired laugh in the dark, and then a gray veil pulling me away.
         """
     }
 
