@@ -9,6 +9,7 @@
 "common.done" = "Готово";
 "common.close" = "Закрыть";
 "common.error" = "Ошибка";
+"common.retry" = "Повторить";
 "common.yesterday" = "Вчера";
 "common.show_all" = "Показать все";
 

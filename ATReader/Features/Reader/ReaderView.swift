@@ -25,7 +25,15 @@ struct ReaderView: View {
             if viewModel.isLoading {
                 ProgressView(String(localized: "reader.loading"))
             } else if let errorMessage = viewModel.errorMessage {
-                ContentUnavailableView(String(localized: "common.error"), systemImage: "exclamationmark.triangle", description: Text(errorMessage))
+                ContentUnavailableView(
+                    String(localized: "common.error"),
+                    systemImage: "exclamationmark.triangle",
+                    description: Text(errorMessage)
+                ) {
+                    Button(String(localized: "common.retry")) {
+                        Task { await viewModel.load(workId: work.id, chapterId: currentChapterId) }
+                    }
+                }
             } else {
                 ScrollView {
                     VStack(alignment: .center, spacing: 24) {

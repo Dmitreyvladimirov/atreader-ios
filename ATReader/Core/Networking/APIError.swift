@@ -5,6 +5,6 @@ struct APIError: Error, LocalizedError {
     let message: String
 
     var errorDescription: String? {
-        "APIError(\\(statusCode)): \\(message)"
+        "APIError(\(statusCode)): \(message)"
     }
 }

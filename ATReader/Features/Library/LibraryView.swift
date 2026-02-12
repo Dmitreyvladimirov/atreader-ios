@@ -19,7 +19,15 @@ struct LibraryView: View {
                 if viewModel.isLoading && viewModel.works.isEmpty {
                     ProgressView(String(localized: "library.loading"))
                 } else if let errorMessage = viewModel.errorMessage, viewModel.works.isEmpty {
-                    ContentUnavailableView(String(localized: "common.error"), systemImage: "exclamationmark.triangle", description: Text(errorMessage))
+                    ContentUnavailableView(
+                        String(localized: "common.error"),
+                        systemImage: "exclamationmark.triangle",
+                        description: Text(errorMessage)
+                    ) {
+                        Button(String(localized: "common.retry")) {
+                            Task { await viewModel.refresh() }
+                        }
+                    }
                 } else {
                     ScrollView {
                         VStack(spacing: 16) {

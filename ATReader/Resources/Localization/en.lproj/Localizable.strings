@@ -9,6 +9,7 @@
 "common.done" = "Done";
 "common.close" = "Close";
 "common.error" = "Error";
+"common.retry" = "Retry";
 "common.yesterday" = "Yesterday";
 "common.show_all" = "Show all";
 
