@@ -1,0 +1,21 @@
+import Foundation
+
+final class AppContainer {
+    let authManager: AuthManager
+    let authRepository: AuthRepository
+    let libraryRepository: LibraryRepository
+    let readerRepository: ReaderRepository
+    let progressRepository: ProgressRepository
+
+    init() {
+        let tokenStore = KeychainTokenStore(service: "app.author.today.ios")
+        let authManager = AuthManager(tokenStore: tokenStore)
+        let api = NetworkClient(authManager: authManager)
+
+        self.authManager = authManager
+        self.authRepository = AuthRepositoryImpl(api: api, authManager: authManager)
+        self.libraryRepository = LibraryRepositoryImpl(api: api)
+        self.readerRepository = ReaderRepositoryImpl(api: api)
+        self.progressRepository = InMemoryProgressRepository()
+    }
+}
