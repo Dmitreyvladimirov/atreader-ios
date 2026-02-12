@@ -57,7 +57,7 @@ struct TableOfContentsView: View {
                     .foregroundStyle(.white)
             }
 
-            Text("Table of Contents")
+            Text(String(localized: "toc.title"))
                 .font(.system(size: 42, weight: .semibold, design: .rounded))
                 .foregroundStyle(.white)
             Spacer()
@@ -71,10 +71,10 @@ struct TableOfContentsView: View {
         HStack(spacing: 10) {
             Image(systemName: "magnifyingglass")
                 .foregroundStyle(ATTheme.textSecondary)
-            TextField("Search", text: $searchText)
+            TextField(String(localized: "toc.search.placeholder"), text: $searchText)
         }
         .padding(12)
-        .background(.white)
+        .background(ATTheme.cardBackground)
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .padding(16)
     }

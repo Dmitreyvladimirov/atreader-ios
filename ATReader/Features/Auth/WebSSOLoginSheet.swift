@@ -7,7 +7,7 @@ struct WebSSOLoginSheet: View {
     let onLoginCookieCaptured: (String) -> Void
 
     @State private var hasCapturedCookie = false
-    @State private var helperText = "After successful sign-in, this screen will continue automatically."
+    @State private var helperText = String(localized: "sso.helper.initial")
 
     var body: some View {
         NavigationStack {
@@ -20,7 +20,7 @@ struct WebSSOLoginSheet: View {
                     }
 
                     hasCapturedCookie = true
-                    helperText = "Login detected. Completing authorization..."
+                    helperText = String(localized: "sso.helper.completing")
                     onLoginCookieCaptured(loginCookie)
                 }
 
@@ -37,11 +37,11 @@ struct WebSSOLoginSheet: View {
                     }
                 }
             }
-            .navigationTitle("Author.Today Login")
+            .navigationTitle(String(localized: "sso.title"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Close") { onCancel() }
+                    Button(String(localized: "common.close")) { onCancel() }
                         .disabled(isLoading)
                 }
             }

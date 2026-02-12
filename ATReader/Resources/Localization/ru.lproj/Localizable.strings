@@ -1,0 +1,52 @@
+"settings.title" = "Настройки";
+"settings.section.appearance" = "Оформление";
+"settings.section.language" = "Язык";
+"settings.theme.title" = "Тема";
+"settings.theme.light" = "Светлая";
+"settings.theme.dark" = "Тёмная";
+"settings.language.title" = "Язык интерфейса";
+
+"common.done" = "Готово";
+"common.close" = "Закрыть";
+"common.error" = "Ошибка";
+"common.yesterday" = "Вчера";
+"common.show_all" = "Показать все";
+
+"login.title" = "Авторизация";
+"login.email.placeholder" = "Адрес эл. почты";
+"login.password.placeholder" = "Пароль";
+"login.signing_in" = "Входим...";
+"login.sign_in" = "Войти";
+"login.register" = "Регистрация";
+"login.social.title" = "Войти через социальные сети";
+"login.social.vk" = "VK ID";
+"login.social.google" = "Google";
+"login.social.yandex" = "Яндекс ID";
+"login.forgot_password" = "Забыли пароль?";
+"login.error.empty_credentials" = "Введите email и пароль";
+
+"sso.title" = "Вход Author.Today";
+"sso.helper.initial" = "После успешного входа авторизация продолжится автоматически.";
+"sso.helper.completing" = "Вход обнаружен. Завершаем авторизацию...";
+
+"library.title" = "Моя библиотека";
+"library.loading" = "Загружаем библиотеку";
+"library.shelf.reading" = "Читаю / слушаю";
+
+"book.status.in_progress" = "В процессе";
+"book.stats.likes" = "Нравится";
+"book.stats.awards" = "Награды";
+"book.stats.comments" = "Комментарии";
+"book.action.gift" = "Подарить 183 ₽";
+"book.action.read" = "Читать";
+"book.access.paid" = "Доступ оплачен";
+"book.description.placeholder" = "Тот, кто ранит тигра, будет им растерзан. Здесь краткое описание книги в стиле мобильной версии.";
+"book.menu.toc" = "Оглавление";
+"book.menu.info" = "Информация и статистика";
+"book.menu.series" = "Цикл";
+
+"toc.title" = "Оглавление";
+"toc.search.placeholder" = "Поиск";
+
+"reader.loading" = "Загружаем главу";
+"reader.chapter.default" = "Глава";

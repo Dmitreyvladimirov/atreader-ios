@@ -1,0 +1,52 @@
+"settings.title" = "Settings";
+"settings.section.appearance" = "Appearance";
+"settings.section.language" = "Language";
+"settings.theme.title" = "Theme";
+"settings.theme.light" = "Light";
+"settings.theme.dark" = "Dark";
+"settings.language.title" = "App Language";
+
+"common.done" = "Done";
+"common.close" = "Close";
+"common.error" = "Error";
+"common.yesterday" = "Yesterday";
+"common.show_all" = "Show all";
+
+"login.title" = "Authorization";
+"login.email.placeholder" = "Email";
+"login.password.placeholder" = "Password";
+"login.signing_in" = "Signing in...";
+"login.sign_in" = "Sign in";
+"login.register" = "Register";
+"login.social.title" = "Sign in via social";
+"login.social.vk" = "VK ID";
+"login.social.google" = "Google";
+"login.social.yandex" = "Yandex ID";
+"login.forgot_password" = "Forgot password?";
+"login.error.empty_credentials" = "Enter email and password";
+
+"sso.title" = "Author.Today Login";
+"sso.helper.initial" = "After successful sign-in, this screen will continue automatically.";
+"sso.helper.completing" = "Login detected. Completing authorization...";
+
+"library.title" = "My Library";
+"library.loading" = "Loading library";
+"library.shelf.reading" = "Reading / Listening";
+
+"book.status.in_progress" = "In progress";
+"book.stats.likes" = "Likes";
+"book.stats.awards" = "Awards";
+"book.stats.comments" = "Comments";
+"book.action.gift" = "Gift 183 ₽";
+"book.action.read" = "Read";
+"book.access.paid" = "Access paid";
+"book.description.placeholder" = "The one who hurts the tiger will be torn apart by it. This is a short placeholder description in the mobile style.";
+"book.menu.toc" = "Table of Contents";
+"book.menu.info" = "Information and Statistics";
+"book.menu.series" = "Series";
+
+"toc.title" = "Table of Contents";
+"toc.search.placeholder" = "Search";
+
+"reader.loading" = "Loading chapter";
+"reader.chapter.default" = "Chapter";

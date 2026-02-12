@@ -39,7 +39,7 @@ struct LoginView: View {
 
     private var topBar: some View {
         HStack {
-            Text("Authorization")
+            Text(String(localized: "login.title"))
                 .font(.system(size: 38, weight: .semibold, design: .rounded))
                 .foregroundStyle(Color.white)
             Spacer()
@@ -54,8 +54,8 @@ struct LoginView: View {
 
     private var credentialsBlock: some View {
         VStack(spacing: 14) {
-            iconField(systemName: "person.fill", placeholder: "Email", text: $viewModel.email)
-            iconSecureField(systemName: "lock.fill", placeholder: "Password", text: $viewModel.password)
+            iconField(systemName: "person.fill", placeholder: String(localized: "login.email.placeholder"), text: $viewModel.email)
+            iconSecureField(systemName: "lock.fill", placeholder: String(localized: "login.password.placeholder"), text: $viewModel.password)
 
             if let errorMessage = viewModel.errorMessage {
                 Text(errorMessage)
@@ -68,13 +68,13 @@ struct LoginView: View {
 
     private var actionButtons: some View {
         HStack(spacing: 12) {
-            Button(viewModel.isLoading ? "Signing in..." : "Sign in") {
+            Button(viewModel.isLoading ? String(localized: "login.signing_in") : String(localized: "login.sign_in")) {
                 Task { await viewModel.login(onSuccess: onSuccess) }
             }
             .buttonStyle(ATFilledButtonStyle(background: ATTheme.successGreen))
             .disabled(viewModel.isLoading)
 
-            Button("Register") {}
+            Button(String(localized: "login.register")) {}
                 .buttonStyle(ATOutlineButtonStyle())
         }
     }
@@ -82,7 +82,7 @@ struct LoginView: View {
     private var socialDivider: some View {
         HStack(spacing: 10) {
             Rectangle().fill(ATTheme.textSecondary.opacity(0.35)).frame(height: 1)
-            Text("Sign in via social")
+            Text(String(localized: "login.social.title"))
                 .font(.title3)
                 .foregroundStyle(ATTheme.textSecondary)
             Rectangle().fill(ATTheme.textSecondary.opacity(0.35)).frame(height: 1)
@@ -95,23 +95,23 @@ struct LoginView: View {
             Button {
                 viewModel.beginWebSSO()
             } label: {
-                Label("VK ID", systemImage: "person.crop.circle.badge.checkmark")
+                Label(String(localized: "login.social.vk"), systemImage: "person.crop.circle.badge.checkmark")
                     .font(.title3.weight(.semibold))
                     .frame(maxWidth: .infinity)
             }
             .buttonStyle(ATFilledButtonStyle(background: Color(red: 0.08, green: 0.47, blue: 0.92)))
 
             HStack(spacing: 10) {
-                Button("Google") { viewModel.beginWebSSO() }
+                Button(String(localized: "login.social.google")) { viewModel.beginWebSSO() }
                     .buttonStyle(ATOutlineButtonStyle())
-                Button("Yandex ID") { viewModel.beginWebSSO() }
+                Button(String(localized: "login.social.yandex")) { viewModel.beginWebSSO() }
                     .buttonStyle(ATFilledButtonStyle(background: .black))
             }
         }
     }
 
     private var forgotPassword: some View {
-        Button("Forgot password?") {}
+        Button(String(localized: "login.forgot_password")) {}
             .font(.title3)
             .foregroundStyle(ATTheme.brandBlue)
             .padding(.top, 8)
@@ -127,7 +127,7 @@ struct LoginView: View {
                 .autocorrectionDisabled(true)
         }
         .padding(14)
-        .background(.white)
+        .background(ATTheme.cardBackground)
         .clipShape(RoundedRectangle(cornerRadius: 12))
     }
 
@@ -141,7 +141,7 @@ struct LoginView: View {
                 .foregroundStyle(ATTheme.textSecondary)
         }
         .padding(14)
-        .background(.white)
+        .background(ATTheme.cardBackground)
         .clipShape(RoundedRectangle(cornerRadius: 12))
     }
 }
@@ -165,7 +165,7 @@ private struct ATOutlineButtonStyle: ButtonStyle {
             .foregroundStyle(ATTheme.brandBlue)
             .padding(.vertical, 14)
             .frame(maxWidth: .infinity)
-            .background(.white.opacity(configuration.isPressed ? 0.7 : 1))
+            .background(ATTheme.cardBackground.opacity(configuration.isPressed ? 0.7 : 1))
             .overlay(
                 RoundedRectangle(cornerRadius: 12)
                     .stroke(ATTheme.textSecondary.opacity(0.25), lineWidth: 1)

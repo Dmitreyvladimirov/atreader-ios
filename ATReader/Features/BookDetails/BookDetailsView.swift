@@ -54,14 +54,14 @@ struct BookDetailsView: View {
                     .foregroundStyle(ATTheme.brandBlue)
 
                 HStack(spacing: 8) {
-                    Label("In progress", systemImage: "pencil")
+                    Label(String(localized: "book.status.in_progress"), systemImage: "pencil")
                         .font(.subheadline.weight(.semibold))
                         .padding(.horizontal, 10)
                         .padding(.vertical, 6)
                         .background(ATTheme.brandBlue)
                         .foregroundStyle(.white)
                         .clipShape(RoundedRectangle(cornerRadius: 8))
-                    Text("Yesterday")
+                    Text(String(localized: "common.yesterday"))
                         .font(.subheadline)
                         .foregroundStyle(ATTheme.textSecondary)
                 }
@@ -70,20 +70,20 @@ struct BookDetailsView: View {
             Spacer(minLength: 0)
         }
         .padding(12)
-        .background(.white)
+        .background(ATTheme.cardBackground)
         .clipShape(RoundedRectangle(cornerRadius: 14))
     }
 
     private var statsRow: some View {
         HStack(spacing: 0) {
-            statItem(number: "882", title: "Likes")
+            statItem(number: "882", title: String(localized: "book.stats.likes"))
             Divider()
-            statItem(number: "165", title: "Awards")
+            statItem(number: "165", title: String(localized: "book.stats.awards"))
             Divider()
-            statItem(number: "78", title: "Comments")
+            statItem(number: "78", title: String(localized: "book.stats.comments"))
         }
         .frame(height: 82)
-        .background(.white)
+        .background(ATTheme.cardBackground)
         .clipShape(RoundedRectangle(cornerRadius: 14))
     }
 
@@ -100,7 +100,7 @@ struct BookDetailsView: View {
 
     private var actionsRow: some View {
         HStack(spacing: 10) {
-            Button("Gift 183 ₽") {}
+            Button(String(localized: "book.action.gift")) {}
                 .buttonStyle(ATSecondaryActionStyle())
 
             if let first = viewModel.chapters.first {
@@ -112,12 +112,12 @@ struct BookDetailsView: View {
                         initialChapterId: first.id
                     )
                 } label: {
-                    Text("Read")
+                    Text(String(localized: "book.action.read"))
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(ATPrimaryActionStyle())
             } else {
-                Text("Read")
+                Text(String(localized: "book.action.read"))
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 14)
                     .background(ATTheme.brandBlue.opacity(0.4))
@@ -130,21 +130,21 @@ struct BookDetailsView: View {
 
     private var descriptionBlock: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Access paid")
+            Text(String(localized: "book.access.paid"))
                 .font(.title3.weight(.semibold))
                 .foregroundStyle(ATTheme.successGreen)
 
-            Text("The one who hurts the tiger will be torn apart by it. A short sample description goes here to mimic the original card and spacing.")
+            Text(String(localized: "book.description.placeholder"))
                 .font(.body)
                 .foregroundStyle(ATTheme.textPrimary)
 
-            Button("show all") {}
+            Button(String(localized: "common.show_all")) {}
                 .font(.title3)
                 .foregroundStyle(ATTheme.brandBlue)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(14)
-        .background(.white)
+        .background(ATTheme.cardBackground)
         .clipShape(RoundedRectangle(cornerRadius: 14))
     }
 
@@ -153,14 +153,14 @@ struct BookDetailsView: View {
             NavigationLink {
                 TableOfContentsView(chapters: viewModel.chapters, selectedChapterId: viewModel.chapters.first?.id)
             } label: {
-                rowLabel(title: "Table of Contents", trailing: "\(viewModel.chapters.count)")
+                rowLabel(title: String(localized: "book.menu.toc"), trailing: "\(viewModel.chapters.count)")
             }
             Divider()
-            rowLabel(title: "Information and Statistics", trailing: nil)
+            rowLabel(title: String(localized: "book.menu.info"), trailing: nil)
             Divider()
-            rowLabel(title: "Series", trailing: "3")
+            rowLabel(title: String(localized: "book.menu.series"), trailing: "3")
         }
-        .background(.white)
+        .background(ATTheme.cardBackground)
         .clipShape(RoundedRectangle(cornerRadius: 14))
     }
 
@@ -202,7 +202,7 @@ private struct ATSecondaryActionStyle: ButtonStyle {
             .foregroundStyle(ATTheme.textPrimary)
             .padding(.vertical, 14)
             .padding(.horizontal, 18)
-            .background(.white.opacity(configuration.isPressed ? 0.75 : 1))
+            .background(ATTheme.cardBackground.opacity(configuration.isPressed ? 0.75 : 1))
             .overlay(
                 RoundedRectangle(cornerRadius: 12)
                     .stroke(ATTheme.textSecondary.opacity(0.2), lineWidth: 1)

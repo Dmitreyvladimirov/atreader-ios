@@ -23,9 +23,9 @@ struct ReaderView: View {
             ATTheme.background.ignoresSafeArea()
 
             if viewModel.isLoading {
-                ProgressView("Loading chapter")
+                ProgressView(String(localized: "reader.loading"))
             } else if let errorMessage = viewModel.errorMessage {
-                ContentUnavailableView("Error", systemImage: "exclamationmark.triangle", description: Text(errorMessage))
+                ContentUnavailableView(String(localized: "common.error"), systemImage: "exclamationmark.triangle", description: Text(errorMessage))
             } else {
                 ScrollView {
                     VStack(alignment: .center, spacing: 24) {
@@ -95,7 +95,7 @@ struct ReaderView: View {
 
     private var currentChapterTitle: String {
         let chapter = chapters.first(where: { $0.id == currentChapterId })
-        return chapter?.title ?? "Chapter"
+        return chapter?.title ?? String(localized: "reader.chapter.default")
     }
 }
 

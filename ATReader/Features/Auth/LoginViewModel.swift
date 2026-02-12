@@ -18,7 +18,7 @@ final class LoginViewModel: ObservableObject {
 
     func login(onSuccess: () -> Void) async {
         guard !email.isEmpty, !password.isEmpty else {
-            errorMessage = "Enter email and password"
+            errorMessage = String(localized: "login.error.empty_credentials")
             return
         }
 

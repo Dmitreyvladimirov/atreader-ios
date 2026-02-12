@@ -4,6 +4,8 @@ import SwiftUI
 struct ATReaderApp: App {
     private let container: AppContainer
     @StateObject private var coordinator: AppCoordinator
+    @AppStorage("app_theme") private var appTheme = "light"
+    @AppStorage("app_language") private var appLanguage = "ru"
 
     init() {
         let container = AppContainer()
@@ -31,6 +33,8 @@ struct ATReaderApp: App {
                     )
                 }
             }
+            .preferredColorScheme(appTheme == "dark" ? .dark : .light)
+            .environment(\.locale, Locale(identifier: appLanguage))
             .task {
                 await coordinator.bootstrap()
             }

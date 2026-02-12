@@ -3,6 +3,7 @@ import SwiftUI
 struct LibraryView: View {
     @StateObject var viewModel: LibraryViewModel
     let readerRepository: ReaderRepository
+    @State private var isSettingsPresented = false
 
     private let columns = [
         GridItem(.flexible(), spacing: 14),
@@ -16,9 +17,9 @@ struct LibraryView: View {
                 ATTheme.background.ignoresSafeArea()
 
                 if viewModel.isLoading && viewModel.works.isEmpty {
-                    ProgressView("Loading library")
+                    ProgressView(String(localized: "library.loading"))
                 } else if let errorMessage = viewModel.errorMessage, viewModel.works.isEmpty {
-                    ContentUnavailableView("Error", systemImage: "exclamationmark.triangle", description: Text(errorMessage))
+                    ContentUnavailableView(String(localized: "common.error"), systemImage: "exclamationmark.triangle", description: Text(errorMessage))
                 } else {
                     ScrollView {
                         VStack(spacing: 16) {
@@ -50,6 +51,9 @@ struct LibraryView: View {
             }
             .task { await viewModel.refresh() }
             .toolbar(.hidden, for: .navigationBar)
+            .sheet(isPresented: $isSettingsPresented) {
+                AppSettingsView()
+            }
         }
     }
 
@@ -63,7 +67,7 @@ struct LibraryView: View {
                 Image(systemName: "bell")
                 Image(systemName: "message")
                 Circle()
-                    .fill(Color.white.opacity(0.8))
+                    .fill(ATTheme.cardBackground.opacity(0.8))
                     .frame(width: 30, height: 30)
             }
             .font(.title3)
@@ -72,12 +76,17 @@ struct LibraryView: View {
             .padding(.top, 12)
 
             HStack {
-                Text("My Library")
+                Text(String(localized: "library.title"))
                     .font(.system(size: 40, weight: .semibold, design: .rounded))
                     .foregroundStyle(ATTheme.textPrimary)
                 Spacer()
                 RoundedIconButton(systemName: "line.3.horizontal.decrease.circle")
                 RoundedIconButton(systemName: "line.3.horizontal.decrease")
+                Button {
+                    isSettingsPresented = true
+                } label: {
+                    RoundedIconButton(systemName: "gearshape")
+                }
             }
             .padding(.horizontal, 14)
         }
@@ -87,7 +96,7 @@ struct LibraryView: View {
 
     private var shelfRow: some View {
         HStack {
-            Label("Reading / Listening", systemImage: "bookmark")
+            Label(String(localized: "library.shelf.reading"), systemImage: "bookmark")
                 .font(.title3.weight(.semibold))
                 .foregroundStyle(ATTheme.textPrimary)
             Spacer()
@@ -98,7 +107,7 @@ struct LibraryView: View {
                 .foregroundStyle(ATTheme.textSecondary)
         }
         .padding(14)
-        .background(.white)
+        .background(ATTheme.cardBackground)
         .overlay(
             RoundedRectangle(cornerRadius: 14)
                 .stroke(ATTheme.textSecondary.opacity(0.2), lineWidth: 1)
@@ -116,7 +125,7 @@ private struct RoundedIconButton: View {
             .font(.headline)
             .foregroundStyle(ATTheme.textPrimary)
             .frame(width: 42, height: 42)
-            .background(.white)
+            .background(ATTheme.cardBackground)
             .clipShape(RoundedRectangle(cornerRadius: 12))
             .overlay(
                 RoundedRectangle(cornerRadius: 12)
