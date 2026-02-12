@@ -25,11 +25,12 @@ struct ReaderView: View {
             if viewModel.isLoading {
                 ProgressView(String(localized: "reader.loading"))
             } else if let errorMessage = viewModel.errorMessage {
-                ContentUnavailableView(
-                    String(localized: "common.error"),
-                    systemImage: "exclamationmark.triangle",
-                    description: Text(errorMessage)
-                ) {
+                VStack(spacing: 12) {
+                    ContentUnavailableView(
+                        String(localized: "common.error"),
+                        systemImage: "exclamationmark.triangle",
+                        description: Text(errorMessage)
+                    )
                     Button(String(localized: "common.retry")) {
                         Task { await viewModel.load(workId: work.id, chapterId: currentChapterId) }
                     }
