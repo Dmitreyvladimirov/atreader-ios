@@ -22,7 +22,11 @@ final class BookDetailsViewModel: ObservableObject {
                 .sorted(by: { $0.order < $1.order })
             errorMessage = nil
         } catch {
-            errorMessage = error.localizedDescription
+            if let apiError = error as? APIError {
+                errorMessage = apiError.userFacingMessage
+            } else {
+                errorMessage = error.localizedDescription
+            }
         }
     }
 }

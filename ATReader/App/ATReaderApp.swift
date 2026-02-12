@@ -10,7 +10,12 @@ struct ATReaderApp: App {
     init() {
         let container = AppContainer()
         self.container = container
-        _coordinator = StateObject(wrappedValue: AppCoordinator(authRepository: container.authRepository))
+        _coordinator = StateObject(
+            wrappedValue: AppCoordinator(
+                authRepository: container.authRepository,
+                accountRepository: container.accountRepository
+            )
+        )
     }
 
     var body: some Scene {

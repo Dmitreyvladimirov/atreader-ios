@@ -12,6 +12,7 @@
 "common.retry" = "Retry";
 "common.yesterday" = "Yesterday";
 "common.show_all" = "Show all";
+"error.server_unexpected_html" = "Server returned an unexpected response";
 
 "login.title" = "Authorization";
 "login.email.placeholder" = "Email";

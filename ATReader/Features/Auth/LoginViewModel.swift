@@ -31,7 +31,11 @@ final class LoginViewModel: ObservableObject {
             errorMessage = nil
             onSuccess()
         } catch {
-            errorMessage = error.localizedDescription
+            if let apiError = error as? APIError {
+                errorMessage = apiError.userFacingMessage
+            } else {
+                errorMessage = error.localizedDescription
+            }
         }
     }
 
@@ -50,7 +54,11 @@ final class LoginViewModel: ObservableObject {
             isWebLoginPresented = false
             onSuccess()
         } catch {
-            errorMessage = error.localizedDescription
+            if let apiError = error as? APIError {
+                errorMessage = apiError.userFacingMessage
+            } else {
+                errorMessage = error.localizedDescription
+            }
         }
     }
 }

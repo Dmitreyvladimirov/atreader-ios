@@ -3,6 +3,7 @@ import Foundation
 final class AppContainer {
     let authManager: AuthManager
     let authRepository: AuthRepository
+    let accountRepository: AccountRepository
     let libraryRepository: LibraryRepository
     let readerRepository: ReaderRepository
     let progressRepository: ProgressRepository
@@ -15,6 +16,7 @@ final class AppContainer {
 
         self.authManager = authManager
         self.authRepository = AuthRepositoryImpl(api: api, authManager: authManager, webSSOAuthService: webSSOAuthService)
+        self.accountRepository = AccountRepositoryImpl(api: api)
         self.libraryRepository = LibraryRepositoryImpl(api: api)
         self.readerRepository = ReaderRepositoryImpl(api: api)
         self.progressRepository = InMemoryProgressRepository()
