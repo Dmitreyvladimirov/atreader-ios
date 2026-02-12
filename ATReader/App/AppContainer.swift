@@ -11,9 +11,10 @@ final class AppContainer {
         let tokenStore = KeychainTokenStore(service: "app.author.today.ios")
         let authManager = AuthManager(tokenStore: tokenStore)
         let api = NetworkClient(authManager: authManager)
+        let webSSOAuthService = WebSSOAuthService()
 
         self.authManager = authManager
-        self.authRepository = AuthRepositoryImpl(api: api, authManager: authManager)
+        self.authRepository = AuthRepositoryImpl(api: api, authManager: authManager, webSSOAuthService: webSSOAuthService)
         self.libraryRepository = LibraryRepositoryImpl(api: api)
         self.readerRepository = ReaderRepositoryImpl(api: api)
         self.progressRepository = InMemoryProgressRepository()
