@@ -6,35 +6,44 @@ struct WebSSOLoginSheet: View {
     let onCancel: () -> Void
     let onLoginCookieCaptured: (String) -> Void
 
-    @State private var hasCapturedCookie = false
+    @State private var loginCookieValue: String?
     @State private var helperText = String(localized: "sso.helper.initial")
 
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
                 WebLoginView { cookies in
-                    guard !hasCapturedCookie else { return }
-                    guard let loginCookie = cookies.first(where: { $0.name == "LoginCookie" })?.value,
+                    guard let loginCookie = cookies.first(where: { $0.name == "LoginCookie" && $0.domain.contains("author.today") })?.value,
                           !loginCookie.isEmpty else {
                         return
                     }
-
-                    hasCapturedCookie = true
-                    helperText = String(localized: "sso.helper.completing")
-                    onLoginCookieCaptured(loginCookie)
+                    loginCookieValue = loginCookie
+                    helperText = String(localized: "sso.helper.ready")
                 }
 
-                HStack {
-                    Text(helperText)
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
-                        .padding(.horizontal)
-                        .padding(.vertical, 8)
-                    Spacer()
-                    if isLoading {
-                        ProgressView()
-                            .padding(.trailing)
+                VStack(spacing: 10) {
+                    HStack {
+                        Text(helperText)
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
+                            .padding(.horizontal)
+                            .padding(.vertical, 8)
+                        Spacer()
+                        if isLoading {
+                            ProgressView()
+                                .padding(.trailing)
+                        }
                     }
+
+                    Button(String(localized: "sso.continue")) {
+                        guard let cookie = loginCookieValue else { return }
+                        helperText = String(localized: "sso.helper.completing")
+                        onLoginCookieCaptured(cookie)
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .disabled(isLoading || loginCookieValue == nil)
+                    .padding(.horizontal)
+                    .padding(.bottom, 8)
                 }
             }
             .navigationTitle(String(localized: "sso.title"))

@@ -25,11 +25,25 @@ final class WebSSOAuthService {
             throw WebSSOAuthError.missingLoginCookie
         }
 
+        let config = URLSessionConfiguration.ephemeral
+        let cookieStorage = HTTPCookieStorage()
+        config.httpCookieStorage = cookieStorage
+
+        if let cookie = HTTPCookie(properties: [
+            .domain: "author.today",
+            .path: "/",
+            .name: "LoginCookie",
+            .value: loginCookie,
+            .secure: "TRUE",
+            .expires: Date().addingTimeInterval(60 * 15)
+        ]) {
+            cookieStorage.setCookie(cookie)
+        }
+
         var request = URLRequest(url: bearerTokenURL)
         request.httpMethod = "GET"
-        request.setValue("LoginCookie=\(loginCookie)", forHTTPHeaderField: "Cookie")
 
-        let (data, response) = try await URLSession.shared.data(for: request)
+        let (data, response) = try await URLSession(configuration: config).data(for: request)
         let statusCode = (response as? HTTPURLResponse)?.statusCode ?? -1
         guard (200..<300).contains(statusCode) else {
             throw APIError(
@@ -49,16 +63,24 @@ final class WebSSOAuthService {
 
     private func parseToken(data: Data) throws -> String {
         if let dto = try? JSONDecoder().decode(BearerTokenResponseDTO.self, from: data), !dto.token.isEmpty {
-            return dto.token
+            return normalizeToken(dto.token)
         }
 
         if let raw = String(data: data, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines), !raw.isEmpty {
             if raw.hasPrefix("{") {
                 throw WebSSOAuthError.malformedResponse
             }
-            return raw.replacingOccurrences(of: "\"", with: "")
+            return normalizeToken(raw.replacingOccurrences(of: "\"", with: ""))
         }
 
         throw WebSSOAuthError.missingToken
+    }
+
+    private func normalizeToken(_ token: String) -> String {
+        let cleaned = token.trimmingCharacters(in: .whitespacesAndNewlines)
+        if cleaned.lowercased().hasPrefix("bearer ") {
+            return String(cleaned.dropFirst(7))
+        }
+        return cleaned
     }
 }

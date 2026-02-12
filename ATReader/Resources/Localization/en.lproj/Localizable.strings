@@ -28,7 +28,9 @@
 
 "sso.title" = "Author.Today Login";
 "sso.helper.initial" = "After successful sign-in, this screen will continue automatically.";
+"sso.helper.ready" = "Login detected. Tap the button below to continue.";
 "sso.helper.completing" = "Login detected. Completing authorization...";
+"sso.continue" = "Continue";
 
 "library.title" = "My Library";
 "library.loading" = "Loading library";
