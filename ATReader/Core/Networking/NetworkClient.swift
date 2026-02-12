@@ -19,7 +19,10 @@ final class NetworkClient {
         body: Encodable? = nil,
         retryOn401: Bool = true
     ) async throws -> T {
-        var request = URLRequest(url: baseURL.appendingPathComponent(endpoint.path))
+        guard let requestURL = makeURL(for: endpoint) else {
+            throw APIError(statusCode: -1, message: "Invalid request URL")
+        }
+        var request = URLRequest(url: requestURL)
         request.httpMethod = endpoint.method
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
@@ -44,5 +47,12 @@ final class NetworkClient {
         }
 
         return try decoder.decode(T.self, from: data)
+    }
+
+    private func makeURL(for endpoint: Endpoint) -> URL? {
+        var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: false)
+        components?.path = endpoint.path
+        components?.queryItems = endpoint.queryItems
+        return components?.url
     }
 }
