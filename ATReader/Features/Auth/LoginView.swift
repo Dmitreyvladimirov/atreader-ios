@@ -44,3 +44,33 @@ struct LoginView: View {
         }
     }
 }
+
+#Preview("Login") {
+    LoginView(
+        viewModel: LoginViewModel(
+            loginUseCase: LoginUseCase(authRepository: LoginPreviewAuthRepository()),
+            loginWithWebSSOUseCase: LoginWithWebSSOUseCase(authRepository: LoginPreviewAuthRepository())
+        ),
+        onSuccess: {}
+    )
+}
+
+private struct LoginPreviewAuthRepository: AuthRepository {
+    func login(email: String, password: String) async throws -> AuthSession {
+        AuthSession(accessToken: "preview", refreshToken: nil, expiresAt: .now.addingTimeInterval(3600), userId: 1)
+    }
+
+    func loginWithWebSSO(loginCookie: String) async throws -> AuthSession {
+        AuthSession(accessToken: "preview", refreshToken: nil, expiresAt: .now.addingTimeInterval(3600), userId: 1)
+    }
+
+    func refreshToken() async throws -> AuthSession {
+        AuthSession(accessToken: "preview", refreshToken: nil, expiresAt: .now.addingTimeInterval(3600), userId: 1)
+    }
+
+    func logout() async throws {}
+
+    func currentSession() async -> AuthSession? {
+        nil
+    }
+}

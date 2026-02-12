@@ -84,3 +84,11 @@ private struct WebLoginView: UIViewRepresentable {
         }
     }
 }
+
+#Preview("Web SSO Sheet") {
+    WebSSOLoginSheet(
+        isLoading: false,
+        onCancel: {},
+        onLoginCookieCaptured: { _ in }
+    )
+}
