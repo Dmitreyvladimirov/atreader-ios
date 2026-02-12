@@ -8,8 +8,8 @@ struct LoginView: View {
         NavigationStack {
             Form {
                 Section("Single Sign-On") {
-                    Button(viewModel.isLoading ? "Opening browser..." : "Sign in with browser (SSO)") {
-                        Task { await viewModel.loginWithWebSSO(onSuccess: onSuccess) }
+                    Button("Sign in with Author.Today web login") {
+                        viewModel.beginWebSSO()
                     }
                     .disabled(viewModel.isLoading)
                 }
@@ -32,6 +32,15 @@ struct LoginView: View {
                 .disabled(viewModel.isLoading)
             }
             .navigationTitle("Author.Today")
+            .sheet(isPresented: $viewModel.isWebLoginPresented) {
+                WebSSOLoginSheet(
+                    isLoading: viewModel.isLoading,
+                    onCancel: { viewModel.isWebLoginPresented = false },
+                    onLoginCookieCaptured: { cookie in
+                        Task { await viewModel.completeWebSSO(loginCookie: cookie, onSuccess: onSuccess) }
+                    }
+                )
+            }
         }
     }
 }

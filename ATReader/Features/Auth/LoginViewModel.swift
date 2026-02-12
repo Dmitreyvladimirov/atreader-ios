@@ -6,6 +6,7 @@ final class LoginViewModel: ObservableObject {
     @Published var password = ""
     @Published var isLoading = false
     @Published var errorMessage: String?
+    @Published var isWebLoginPresented = false
 
     private let loginUseCase: LoginUseCase
     private let loginWithWebSSOUseCase: LoginWithWebSSOUseCase
@@ -33,13 +34,19 @@ final class LoginViewModel: ObservableObject {
         }
     }
 
-    func loginWithWebSSO(onSuccess: () -> Void) async {
+    func beginWebSSO() {
+        errorMessage = nil
+        isWebLoginPresented = true
+    }
+
+    func completeWebSSO(loginCookie: String, onSuccess: () -> Void) async {
         isLoading = true
         defer { isLoading = false }
 
         do {
-            try await loginWithWebSSOUseCase.execute()
+            try await loginWithWebSSOUseCase.execute(loginCookie: loginCookie)
             errorMessage = nil
+            isWebLoginPresented = false
             onSuccess()
         } catch {
             errorMessage = error.localizedDescription

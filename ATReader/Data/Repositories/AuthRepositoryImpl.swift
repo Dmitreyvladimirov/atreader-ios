@@ -29,8 +29,8 @@ final class AuthRepositoryImpl: AuthRepository {
         return session
     }
 
-    func loginWithWebSSO() async throws -> AuthSession {
-        let session = try await webSSOAuthService.authenticate()
+    func loginWithWebSSO(loginCookie: String) async throws -> AuthSession {
+        let session = try await webSSOAuthService.exchangeLoginCookieForSession(loginCookie: loginCookie)
         try await authManager.updateSession(session)
         return session
     }
