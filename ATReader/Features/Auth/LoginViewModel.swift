@@ -8,9 +8,11 @@ final class LoginViewModel: ObservableObject {
     @Published var errorMessage: String?
 
     private let loginUseCase: LoginUseCase
+    private let loginWithWebSSOUseCase: LoginWithWebSSOUseCase
 
-    init(loginUseCase: LoginUseCase) {
+    init(loginUseCase: LoginUseCase, loginWithWebSSOUseCase: LoginWithWebSSOUseCase) {
         self.loginUseCase = loginUseCase
+        self.loginWithWebSSOUseCase = loginWithWebSSOUseCase
     }
 
     func login(onSuccess: () -> Void) async {
@@ -24,6 +26,19 @@ final class LoginViewModel: ObservableObject {
 
         do {
             try await loginUseCase.execute(email: email, password: password)
+            errorMessage = nil
+            onSuccess()
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+    }
+
+    func loginWithWebSSO(onSuccess: () -> Void) async {
+        isLoading = true
+        defer { isLoading = false }
+
+        do {
+            try await loginWithWebSSOUseCase.execute()
             errorMessage = nil
             onSuccess()
         } catch {

@@ -7,6 +7,13 @@ struct LoginView: View {
     var body: some View {
         NavigationStack {
             Form {
+                Section("Single Sign-On") {
+                    Button(viewModel.isLoading ? "Opening browser..." : "Sign in with browser (SSO)") {
+                        Task { await viewModel.loginWithWebSSO(onSuccess: onSuccess) }
+                    }
+                    .disabled(viewModel.isLoading)
+                }
+
                 Section("Credentials") {
                     TextField("Email", text: $viewModel.email)
                         .textInputAutocapitalization(.never)

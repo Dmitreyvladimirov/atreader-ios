@@ -23,7 +23,8 @@ struct ATReaderApp: App {
                 } else {
                     LoginView(
                         viewModel: LoginViewModel(
-                            loginUseCase: LoginUseCase(authRepository: container.authRepository)
+                            loginUseCase: LoginUseCase(authRepository: container.authRepository),
+                            loginWithWebSSOUseCase: LoginWithWebSSOUseCase(authRepository: container.authRepository)
                         ),
                         onSuccess: coordinator.didLogin
                     )
