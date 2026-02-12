@@ -23,7 +23,7 @@ final class NetworkClient {
         request.httpMethod = endpoint.method
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
-        if let token = await authManager.bearerToken() {
+        if let token = authManager.bearerToken() {
             request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         }
 

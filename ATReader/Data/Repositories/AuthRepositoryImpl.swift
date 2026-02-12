@@ -18,28 +18,28 @@ final class AuthRepositoryImpl: AuthRepository {
             retryOn401: false
         )
         let session = dto.toDomain()
-        try await authManager.updateSession(session)
+        try authManager.updateSession(session)
         return session
     }
 
     func refreshToken() async throws -> AuthSession {
         let dto: AuthSessionDTO = try await api.request(.refreshToken, retryOn401: false)
         let session = dto.toDomain()
-        try await authManager.updateSession(session)
+        try authManager.updateSession(session)
         return session
     }
 
     func loginWithWebSSO(loginCookie: String) async throws -> AuthSession {
         let session = try await webSSOAuthService.exchangeLoginCookieForSession(loginCookie: loginCookie)
-        try await authManager.updateSession(session)
+        try authManager.updateSession(session)
         return session
     }
 
     func logout() async throws {
-        try await authManager.clear()
+        try authManager.clear()
     }
 
     func currentSession() async -> AuthSession? {
-        await authManager.session
+        authManager.session
     }
 }
