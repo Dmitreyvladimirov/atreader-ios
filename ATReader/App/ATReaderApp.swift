@@ -18,7 +18,8 @@ struct ATReaderApp: App {
                     LibraryView(
                         viewModel: LibraryViewModel(
                             fetchLibraryUseCase: FetchLibraryUseCase(libraryRepository: container.libraryRepository)
-                        )
+                        ),
+                        readerRepository: container.readerRepository
                     )
                 } else {
                     LoginView(
