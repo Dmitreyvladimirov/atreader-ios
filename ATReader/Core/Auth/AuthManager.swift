@@ -1,6 +1,7 @@
 import Foundation
 
-actor AuthManager {
+@MainActor
+final class AuthManager {
     private let tokenStore: TokenStore
     private(set) var session: AuthSession?
 

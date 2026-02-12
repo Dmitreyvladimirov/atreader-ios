@@ -1,5 +1,6 @@
 import Foundation
 
+@MainActor
 final class AppContainer {
     let authManager: AuthManager
     let authRepository: AuthRepository
