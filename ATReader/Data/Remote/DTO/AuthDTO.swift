@@ -20,3 +20,7 @@ struct AuthSessionDTO: Decodable {
         )
     }
 }
+
+struct BearerTokenResponseDTO: Decodable {
+    let token: String
+}

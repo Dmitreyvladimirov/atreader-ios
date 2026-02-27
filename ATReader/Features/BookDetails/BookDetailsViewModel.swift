@@ -2,23 +2,24 @@ import Foundation
 import Combine
 
 @MainActor
-final class LibraryViewModel: ObservableObject {
-    @Published private(set) var works: [Work] = []
+final class BookDetailsViewModel: ObservableObject {
+    @Published private(set) var chapters: [Chapter] = []
     @Published var isLoading = false
     @Published var errorMessage: String?
 
-    private let fetchLibraryUseCase: FetchLibraryUseCase
+    private let fetchWorkContentUseCase: FetchWorkContentUseCase
 
-    init(fetchLibraryUseCase: FetchLibraryUseCase) {
-        self.fetchLibraryUseCase = fetchLibraryUseCase
+    init(fetchWorkContentUseCase: FetchWorkContentUseCase) {
+        self.fetchWorkContentUseCase = fetchWorkContentUseCase
     }
 
-    func refresh() async {
+    func load(workId: Int) async {
         isLoading = true
         defer { isLoading = false }
 
         do {
-            works = try await fetchLibraryUseCase.execute()
+            chapters = try await fetchWorkContentUseCase.execute(workId: workId)
+                .sorted(by: { $0.order < $1.order })
             errorMessage = nil
         } catch {
             if let apiError = error as? APIError {

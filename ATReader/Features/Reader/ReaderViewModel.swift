@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 
 @MainActor
 final class ReaderViewModel: ObservableObject {
@@ -20,7 +21,11 @@ final class ReaderViewModel: ObservableObject {
             text = try await readerRepository.fetchChapterText(workId: workId, chapterId: chapterId)
             errorMessage = nil
         } catch {
-            errorMessage = error.localizedDescription
+            if let apiError = error as? APIError {
+                errorMessage = apiError.userFacingMessage
+            } else {
+                errorMessage = error.localizedDescription
+            }
         }
     }
 }
